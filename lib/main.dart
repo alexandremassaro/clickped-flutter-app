@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.transparent,
-        fontFamily: 'Montserrat'
+        fontFamily: 'Montserrat',
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: kPrimaryColor
+        )
       ),
       locale: Locale.fromSubtags(countryCode: 'BRL'),
       home: Wrapper(),

@@ -1,4 +1,5 @@
-import 'file:///E:/Documents/Flutter_Projects/clickped/lib/screens/home/components/tabs/home/components/cardapio/home_tab_cardapio.dart';
+
+import 'package:clickped/screens/home/components/tabs/home/components/cardapio/home_tab_cardapio.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/home_tab_welcome.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,6 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-
 
     if (!_isCheckedIn) {
       return HomeTabWelcome(checkin: isCheckedIn,);

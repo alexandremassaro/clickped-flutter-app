@@ -1,4 +1,4 @@
-import 'file:///E:/Documents/Flutter_Projects/clickped/lib/screens/authenticate/authenticate.dart';
+
 import 'package:clickped/screens/home/home.dart';
 import 'package:clickped/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';

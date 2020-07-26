@@ -3,13 +3,13 @@ import 'package:clickped/models/item_cardapio.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/cardapio_categorias_delegate.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/cardapio_header_delegate.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/home_tab_cardapio_dicas.dart';
+import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/item_detalhe.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class HomeTabCardapio extends StatelessWidget {
-
   const HomeTabCardapio({
     Key key,
   }) : super(key: key);
@@ -113,10 +113,10 @@ class HomeTabCardapio extends StatelessWidget {
       ItemCardapio(
           uid: '14',
           nome:
-          'Combo individual- porção individual de frango frito + batata frita ou polenta + coca mini pet 200ml',
+              'Combo individual- porção individual de frango frito + batata frita ou polenta + coca mini pet 200ml',
           categorias: ['Pratos', 'Frango'],
           descricao:
-          'Porção grande de frango frito 300g(in natura) +batata frita ou polenta (150g in natura) + coca mini pet 200ml acompanha 1 molho grátis (mostarda)',
+              'Porção grande de frango frito 300g(in natura) +batata frita ou polenta (150g in natura) + coca mini pet 200ml acompanha 1 molho grátis (mostarda)',
           fotos: ['assets/images/banner1.jpg'],
           preco: 39.0),
       ItemCardapio(
@@ -158,40 +158,22 @@ class HomeTabCardapio extends StatelessWidget {
     var _lista = itemsLista();
 
     AutoScrollController controller = AutoScrollController(
-        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical,
-        suggestedRowHeight: 400.0
-    );
+        suggestedRowHeight: 400.0);
 
-    Widget _wrapScrollTag({int index, Widget child})
-    => AutoScrollTag(
-      key: ValueKey(index),
-      controller: controller,
-      index: index,
-      child: child,
-      highlightColor: Colors.black.withOpacity(0.1),
-    );
-
-//    void scrollToCategoria(String categoria) {
-//      controller
-//      .;
-//    }
+    Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+          key: ValueKey(index),
+          controller: controller,
+          index: index,
+          child: child,
+          highlightColor: Colors.black.withOpacity(0.1),
+        );
 
     Future scrollToCategoria(int index) async {
-//      if (index == 0) {
-//        await controller.animateTo(0.0, duration: Duration(milliseconds: 100), curve: Curves.linear);
-//        //controller.jumpTo(0.0);
-//        await controller.scrollToIndex(
-//            index, preferPosition: AutoScrollPosition.begin);
-//        //controller.scr
-//      } else {
-//        print(await controller.scrollToIndex(
-//            index, preferPosition: AutoScrollPosition.begin));
-//      }
-      print(await controller.scrollToIndex(
-            index, preferPosition: AutoScrollPosition.begin));
-
-
+      await controller.scrollToIndex(index,
+          preferPosition: AutoScrollPosition.begin);
     }
 
     return CustomScrollView(
@@ -205,8 +187,7 @@ class HomeTabCardapio extends StatelessWidget {
                 maxExtent: 100.0,
                 minExtent: 50.0,
                 categorias: _categorias,
-                categoriaTap: scrollToCategoria
-            ),
+                categoriaTap: scrollToCategoria),
             pinned: true),
         SliverList(
           delegate: SliverChildListDelegate([
@@ -219,91 +200,100 @@ class HomeTabCardapio extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: _lista[index][0] == 0
                   ? _wrapScrollTag(
-                index: _lista[index][2],
-                    child: Container(
-                    alignment: Alignment.centerLeft,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      border: Border(
-                          top:
-                          BorderSide(width: .5, color: Colors.grey[300])),
-                    ),
-                    child: Text(
-                      _lista[index][1],
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                          color: kPrimaryColor),
-                    )),
-                  )
-                  : Container(
-                height: 110.0,
-                width: size.width,
-                decoration: BoxDecoration(
-                  //border: Border.symmetric(vertical: BorderSide(color: Colors.grey,),),
-                  border: Border(
-                      top:
-                      BorderSide(width: .5, color: Colors.grey[300])),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Flexible(
+                      index: _lista[index][2],
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    width: .5, color: Colors.grey[300])),
+                          ),
+                          child: Text(
+                            _lista[index][1],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                                color: kPrimaryColor),
+                          )),
+                    )
+                  : GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ItemDetalhe(
+                                    itemCardapio: _lista[index][1],
+                                  ))),
+                      child: Container(
+                        height: 110.0,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          //border: Border.symmetric(vertical: BorderSide(color: Colors.grey,),),
+                          border: Border(
+                              top: BorderSide(
+                                  width: .5, color: Colors.grey[300])),
+                        ),
                         child: Padding(
-                          padding: EdgeInsets.only(right: 10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Flexible(
-                                flex: 1,
-                                child: Text(
-                                  _lista[index][1].nome,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: kAccentColor),
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          _lista[index][1].nome,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kAccentColor),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 3,
+                                        fit: FlexFit.tight,
+                                        child: Text(
+                                          _lista[index][1].descricao,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          NumberFormat.simpleCurrency(
+                                                  locale: 'pt_BR')
+                                              .format(_lista[index][1].preco),
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Flexible(
-                                flex: 3,
-                                fit: FlexFit.tight,
-                                child: Text(
-                                  _lista[index][1].descricao,
-                                  textAlign: TextAlign.left,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: Text(
-                                  NumberFormat.simpleCurrency(
-                                      locale: 'pt_BR')
-                                      .format(_lista[index][1].preco),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image(
+                                  image: AssetImage(_lista[index][1].fotos[0]),
+                                  width: 90.0,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image(
-                          image: AssetImage(_lista[index][1].fotos[0]),
-                          width: 90.0,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             );
           }, childCount: _lista.length),
         ),

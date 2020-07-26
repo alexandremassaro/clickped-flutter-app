@@ -1,4 +1,6 @@
-import 'file:///E:/Documents/Flutter_Projects/clickped/lib/screens/home/components/tabs/home/home_tab.dart';
+
+import 'package:clickped/screens/home/components/tabs/home/home_tab.dart';
+import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'components/home_navigation_bar.dart';
 
@@ -35,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
         press: (index) => setCurrentIndex(index),
         currentIndex: _currentIndex,
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {  },
+      child: Icon(Icons.chat),)
     );
   }
 }
