@@ -3,7 +3,6 @@ import 'package:clickped/components/sign_in_fields_container.dart';
 import 'package:clickped/components/text_field_container.dart';
 import 'package:clickped/screens/authenticate/register.dart';
 import 'package:clickped/screens/home/home.dart';
-import 'package:clickped/screens/welcome/components/background.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 
