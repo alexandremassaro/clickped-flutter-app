@@ -223,6 +223,7 @@ class HomeTabCardapio extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => ItemDetalhe(
                                     itemCardapio: _lista[index][1],
+                                heroTag: '${_lista[index][1].nome}_$index',
                                   ))),
                       child: Container(
                         height: 110.0,
@@ -283,10 +284,13 @@ class HomeTabCardapio extends StatelessWidget {
                               ),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
-                                child: Image(
-                                  image: AssetImage(_lista[index][1].fotos[0]),
-                                  width: 90.0,
-                                  fit: BoxFit.cover,
+                                child: Hero(
+                                  tag: '${_lista[index][1].nome}_$index',
+                                  child: Image(
+                                    image: AssetImage(_lista[index][1].fotos[0]),
+                                    width: 90.0,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ],
