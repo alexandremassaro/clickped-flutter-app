@@ -1,7 +1,9 @@
 import 'package:clickped/models/item_cardapio.dart';
 import 'package:clickped/models/item_cardapio_opcao.dart';
+import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/confirmar_pedido.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/opcoes.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -46,6 +48,19 @@ class _ItemDetalheState extends State<ItemDetalhe> {
     void removeQuantidade() {
       _quantidade > 1 ? setState(() => _quantidade -= 1) : null ;
     }
+
+    Widget buttonConfirmar = FlatButton(
+      color: kPrimaryColor,
+      child: Text(
+        'Confirmar',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+        print('Confirmar');
+        Navigator.of(context).pop();
+      },
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -225,7 +240,16 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30.0),
                         child: FlatButton(
-                          onPressed: () {  },
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: ConfirmarPedido(quantidade: _quantidade, widget: widget, total: _total, buttonConfirmar: buttonConfirmar),
+                                );
+                              },
+                            );
+                          },
                           color: kPrimaryColor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
