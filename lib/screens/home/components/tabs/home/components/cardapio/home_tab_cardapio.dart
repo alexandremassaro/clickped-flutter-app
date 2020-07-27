@@ -1,5 +1,6 @@
 import 'package:clickped/models/categoria_cardapio.dart';
 import 'package:clickped/models/item_cardapio.dart';
+import 'package:clickped/models/item_cardapio_opcao.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/cardapio_categorias_delegate.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/cardapio_header_delegate.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/home_tab_cardapio_dicas.dart';
@@ -18,6 +19,19 @@ class HomeTabCardapio extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    OpcaoItem criarOpcaoItem(String opcao, double valor) {
+      return OpcaoItem(valor: valor, opcao: opcao);
+    }
+
+    ItemCardapioOpcao criarOpcao(int min, int max, List<OpcaoItem> opcoes) {
+      ItemCardapioOpcao item = ItemCardapioOpcao(min: min, max: max);
+
+      for (OpcaoItem opcao in opcoes) {
+        item.addOpcao(opcao);
+      }
+      return item;
+    }
+
     var _cardapio = [
       ItemCardapio(
           uid: '1',
@@ -25,91 +39,104 @@ class HomeTabCardapio extends StatelessWidget {
           categorias: ['Sanduíches'],
           descricao: 'Lanche',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 35.0),
+          preco: 35.0,
+          opcoes: []),
       ItemCardapio(
           uid: '2',
           nome: 'Frango duplo',
           categorias: ['Hot Dog'],
           descricao: 'Lanche',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 15.0),
+          preco: 15.0,
+          opcoes: []),
       ItemCardapio(
           uid: '3',
           nome: 'Heineken 600ml',
           categorias: ['Bebidas', 'Cervejas'],
           descricao: 'Cerveja',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 15.0),
+          preco: 15.0,
+          opcoes: []),
       ItemCardapio(
           uid: '4',
           nome: 'Heineken LongNeck',
           categorias: ['Bebidas', 'Cervejas'],
           descricao: 'Cerveja',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 8.0),
+          preco: 8.0,
+          opcoes: []),
       ItemCardapio(
           uid: '5',
           nome: 'Filé à parmegiana',
           categorias: ['Pratos', 'Filés'],
           descricao: 'Filé a parmegiana',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 27.0),
+          preco: 27.0,
+          opcoes: []),
       ItemCardapio(
           uid: '6',
           nome: 'Batata frita',
           categorias: ['Porções'],
           descricao: 'Porção de Batata frita',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 12.0),
+          preco: 12.0,
+          opcoes: []),
       ItemCardapio(
           uid: '7',
           nome: 'Calabresa acebolada',
           categorias: ['Porções'],
           descricao: 'Porção de calabresa acebolada',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 14.0),
+          preco: 14.0,
+          opcoes: []),
       ItemCardapio(
           uid: '8',
           nome: 'Calabresa acebolada',
           categorias: ['Porções'],
           descricao: 'Porção de calabresa acebolada',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 14.0),
+          preco: 14.0,
+          opcoes: []),
       ItemCardapio(
           uid: '9',
           nome: 'MacLanche Feliz',
           categorias: ['Sanduíches'],
           descricao: 'Lanche',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 99.0),
+          preco: 99.0,
+          opcoes: []),
       ItemCardapio(
           uid: '10',
           nome: 'Coca-Cola 600ml',
           categorias: ['Bebidas', 'Refrigerantes'],
           descricao: 'Refrigerante',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 9.0),
+          preco: 9.0,
+          opcoes: []),
       ItemCardapio(
           uid: '11',
           nome: 'Coca-Cola Lata',
           categorias: ['Bebidas', 'Refrigerantes'],
           descricao: 'Refrigerante',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 7.0),
+          preco: 7.0,
+          opcoes: []),
       ItemCardapio(
           uid: '12',
           nome: 'Coca-Cola 2 litros',
           categorias: ['Bebidas', 'Refrigerantes'],
           descricao: 'Refrigerante',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 12.0),
+          preco: 12.0,
+          opcoes: []),
       ItemCardapio(
           uid: '13',
           nome: 'Picanha no alho',
           categorias: ['Pratos', 'Churrasco'],
           descricao: 'Picanha no alho',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 42.0),
+          preco: 42.0,
+          opcoes: []),
       ItemCardapio(
           uid: '14',
           nome:
@@ -118,14 +145,48 @@ class HomeTabCardapio extends StatelessWidget {
           descricao:
               'Porção grande de frango frito 300g(in natura) +batata frita ou polenta (150g in natura) + coca mini pet 200ml acompanha 1 molho grátis (mostarda)',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 39.0),
+          preco: 39.0,
+          opcoes: []),
       ItemCardapio(
           uid: '15',
           nome: 'Costela assada',
           categorias: ['Pratos', 'Churrasco'],
           descricao: 'Costela assada',
           fotos: ['assets/images/banner1.jpg'],
-          preco: 39.0),
+          preco: 39.0,
+        opcoes: []
+      ),
+      ItemCardapio(
+          uid: '16',
+          nome: 'Kit Churrasco',
+          categorias: ['Pratos', 'Churrasco'],
+          descricao:
+              'Costela assada gde, 1 porção inteira de carne da preferência, 1 salada de tomate, linguicinha assada, 1 porção de mandioca cozida, arroz grande, 2 pães de alho, 1 coca 2 litros, serve 6 pessoas',
+          fotos: ['assets/images/banner1.jpg'],
+          preco: 219.9,
+          opcoes: [
+            criarOpcao(1, 1, [
+              criarOpcaoItem('Fraldinha na mostarda', 0.0),
+              criarOpcaoItem('Costelinha de porco no mel', 0.0),
+              criarOpcaoItem('Lombo de porco no mel', 0.0),
+              criarOpcaoItem('Filé de frango com queijo', 0.0)
+            ]),
+            criarOpcao(0, 1, [
+              criarOpcaoItem('Arroz branco', 0.0),
+              criarOpcaoItem('Arroz temperado', 0.0),
+              criarOpcaoItem('Arroz integral', 0.0),
+              criarOpcaoItem('Arroz parbolizado', 0.0)
+            ]),
+            criarOpcao(0, 2, [
+              criarOpcaoItem('Molho verde', 1.0),
+              criarOpcaoItem('Maionese da casa', 1.0),
+              criarOpcaoItem('Maionese comum', 1.0)
+            ]),
+            criarOpcao(1, 2, [
+              criarOpcaoItem('Vinagrete', 5.0),
+              criarOpcaoItem('Salada de alface', 5.0)
+            ]),
+          ]),
     ];
 
     var _categorias = [
@@ -223,7 +284,7 @@ class HomeTabCardapio extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => ItemDetalhe(
                                     itemCardapio: _lista[index][1],
-                                heroTag: '${_lista[index][1].nome}_$index',
+                                    heroTag: '${_lista[index][1].nome}_$index',
                                   ))),
                       child: Container(
                         height: 110.0,
@@ -287,7 +348,8 @@ class HomeTabCardapio extends StatelessWidget {
                                 child: Hero(
                                   tag: '${_lista[index][1].nome}_$index',
                                   child: Image(
-                                    image: AssetImage(_lista[index][1].fotos[0]),
+                                    image:
+                                        AssetImage(_lista[index][1].fotos[0]),
                                     width: 90.0,
                                     fit: BoxFit.cover,
                                   ),

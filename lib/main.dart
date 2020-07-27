@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'ClickPed',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
+        accentColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.transparent,
         fontFamily: 'Montserrat',
         floatingActionButtonTheme: FloatingActionButtonThemeData(
