@@ -1,4 +1,5 @@
 
+import 'package:clickped/screens/home/components/tabs/comandas/comandas_tab.dart';
 import 'package:clickped/screens/home/components/tabs/home/home_tab.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var tabs = [
     HomeTab(),
-    // TODO: Implement "Comandas" tab in home screen
-    Center(child: Text('Comandas')),
+    ComandasTab(),
     // TODO: Implement "Perfil" tab in home screen
     Center(child: Text('Perfil')),
   ];
