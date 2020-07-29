@@ -14,17 +14,12 @@ class _ComandasTabState extends State<ComandasTab> {
   Color _page0 = kPrimaryColor;
   Color _page1 = kSecondaryColor;
 
-  BoxDecoration decorationSelectedPage = BoxDecoration(
-    border: Border.all(color: kPrimaryColor, width: 2.0)
-  );
-
-  BoxDecoration decorationUnselectedPage = BoxDecoration(
-    color: Colors.grey
-  );
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    BoxDecoration _page0Decoration;
+    BoxDecoration _page1Decoration;
 
     int _page = 0;
 
@@ -88,7 +83,6 @@ class _ComandasTabState extends State<ComandasTab> {
                             ),
                           ),
                         ),
-                        decoration: _page == 0 ? decorationSelectedPage : decorationUnselectedPage,
                       ),
                     ),
                   ),
@@ -108,7 +102,6 @@ class _ComandasTabState extends State<ComandasTab> {
                             ),
                           ),
                         ),
-                        decoration: _page == 1 ? decorationSelectedPage : decorationUnselectedPage,
                       ),
                     ),
                   ),
@@ -125,7 +118,18 @@ class _ComandasTabState extends State<ComandasTab> {
                 onPageChanged: (page) => pageChanged(page),
                 controller: pageController,
                 children: <Widget>[
-                  Text('Page 1'),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Horário de chegada: 28/07/2020 15:08'),
+                        Text('Total: R\$ 200,00'),
+                        Text('Pedidos:'),
+
+                      ],
+                    ),
+                  ),
                   Text('Page 2'),
                 ],
               ),

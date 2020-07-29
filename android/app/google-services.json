@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "170457540629",
+    "firebase_url": "https://clickped-415f9.firebaseio.com",
+    "project_id": "clickped-415f9",
+    "storage_bucket": "clickped-415f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170457540629:android:0c5247e48b6e65ae7bc61c",
+        "android_client_info": {
+          "package_name": "br.com.clickped"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170457540629-4i5ofedf5a263jmg9gu3rabua512trfu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcW8LaWAdiru7i0KDjguXWMEE8VF-B49I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170457540629-4i5ofedf5a263jmg9gu3rabua512trfu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

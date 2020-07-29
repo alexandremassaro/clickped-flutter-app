@@ -1,6 +1,7 @@
 
 import 'package:clickped/screens/home/components/tabs/comandas/comandas_tab.dart';
 import 'package:clickped/screens/home/components/tabs/home/home_tab.dart';
+import 'package:clickped/services/auth.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'components/home_navigation_bar.dart';
@@ -30,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: tabs[_currentIndex],
@@ -37,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         press: (index) => setCurrentIndex(index),
         currentIndex: _currentIndex,
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {  },
+      floatingActionButton: FloatingActionButton(onPressed: () async { await _auth.signOut(); },
       child: Icon(Icons.chat),)
     );
   }
