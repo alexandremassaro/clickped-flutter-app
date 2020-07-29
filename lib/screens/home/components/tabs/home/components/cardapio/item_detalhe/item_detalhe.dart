@@ -1,9 +1,14 @@
+import 'package:clickped/models/item_cardapio.dart';
+import 'package:clickped/models/item_cardapio_opcao.dart';
+import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/confirmar_pedido.dart';
+import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/opcoes.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ItemDetalhe extends StatefulWidget {
-  final itemCardapio;
+  final ItemCardapio itemCardapio;
   final String heroTag;
 
   const ItemDetalhe({Key key, this.itemCardapio, this.heroTag}) : super(key: key);
@@ -18,11 +23,21 @@ class _ItemDetalheState extends State<ItemDetalhe> {
   Color _removeButtonColor = kPrimaryColor;
   Color _addButtonColor = kPrimaryColor;
 
+  double calculaTotal() {
+    double totalOpcoes = 0;
+    for (ItemCardapioOpcao itemOps in widget.itemCardapio.opcoes)
+      for (OpcaoItem op in itemOps.opcoes)
+        if (op.selected)
+          totalOpcoes += op.valor;
+
+    return _quantidade * (widget.itemCardapio.preco + totalOpcoes);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    setState(() => _total = _quantidade * widget.itemCardapio.preco);
+    setState(() => _total = calculaTotal());
     setState(() => _quantidade <= 1 ? _removeButtonColor = Colors.grey : _removeButtonColor = kPrimaryColor);
     setState(() => _quantidade >= 99 ? _addButtonColor = Colors.grey : _addButtonColor = kPrimaryColor);
 
@@ -33,6 +48,19 @@ class _ItemDetalheState extends State<ItemDetalhe> {
     void removeQuantidade() {
       _quantidade > 1 ? setState(() => _quantidade -= 1) : null ;
     }
+
+    Widget buttonConfirmar = FlatButton(
+      color: kPrimaryColor,
+      child: Text(
+        'Confirmar',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+        print('Confirmar');
+        Navigator.of(context).pop();
+      },
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -90,14 +118,79 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                       ),
                     ),
                   ),
-                  Text(
-                    NumberFormat.simpleCurrency(locale: 'pt_BR').format(widget.itemCardapio.preco),
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: kAccentColor
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        NumberFormat.simpleCurrency(locale: 'pt_BR').format(widget.itemCardapio.preco),
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: kAccentColor
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: kPrimaryColor.withAlpha(30),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            RawMaterialButton(
+                              child: Icon(Icons.remove, color: _removeButtonColor, ),
+                              onPressed: () => removeQuantidade(),
+                              enableFeedback: true,
+                              elevation: 0.0,
+                              splashColor: kPrimaryColor.withAlpha(50),
+                              shape: CircleBorder(),
+
+                            ),
+                            ClipOval(
+                              child: Container(
+                                width: 50.0,
+                                height: 50.0,
+                                color: kPrimaryColor.withAlpha(150),
+                                alignment: Alignment.center,
+                                child: Text(
+                                    _quantidade.toString(),
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold
+                                    )
+                                ),
+                              ),
+                            ),
+                            RawMaterialButton(
+                              child: Icon(Icons.add, color: _addButtonColor,),
+                              onPressed: () => addQuantidade(),
+                              enableFeedback: true,
+                              elevation: 0.0,
+                              splashColor: kPrimaryColor.withAlpha(50),
+                              shape: CircleBorder(),
+                            ),
+                          ],
+                        ),
+//                        decoration: BoxDecoration(
+//                          border: Border.all(color: Colors.grey, style: BorderStyle.solid),
+//                          borderRadius: BorderRadius.circular(8.0),
+//                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
+                  widget.itemCardapio.opcoes.length > 0 ? Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: Divider(),
+                      ),
+                      for (ItemCardapioOpcao op in widget.itemCardapio.opcoes) Opcoes(opcao: op),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: Divider(),
+                      ),
+                    ],
+                  )
+                  : Padding(
                     padding: EdgeInsets.symmetric(vertical: 20.0),
                     child: Divider(),
                   ),
@@ -113,12 +206,14 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                     child: TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide(
                                   color: Colors.grey,
                                 style: BorderStyle.solid
                               )
                           ),
                         focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
                                 color: kPrimaryColor,
                                 style: BorderStyle.solid
@@ -140,79 +235,46 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                   Container(
                     width: size.width,
                     height: 70.0,
-                    decoration: BoxDecoration(
-                      border: Border.fromBorderSide(BorderSide(color: Colors.grey,style: BorderStyle.solid)),
-                      color: Colors.white,
-                    ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                            width: 120.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                IconButton(
-                                  icon: (Icon(Icons.remove, color: _removeButtonColor,)),
-                                  onPressed: () => removeQuantidade(),
-                                  enableFeedback: true,
-                                ),
-                                Text(
-                                    _quantidade.toString(),
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                    )
-                                ),
-                                IconButton(
-                                  icon: (Icon(Icons.add, color: _addButtonColor,)),
-                                  onPressed: () => addQuantidade(),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, style: BorderStyle.solid),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: FlatButton(
-                                  onPressed: () {  },
-                                  color: kPrimaryColor,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Pedir',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight:
-                                          FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      Text(
-                                          NumberFormat.simpleCurrency().format(_total),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            fontSize: 16.0,
-                                          )
-                                      ),
-                                    ],
-                                  ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: FlatButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: ConfirmarPedido(quantidade: _quantidade, widget: widget, total: _total, buttonConfirmar: buttonConfirmar),
+                                );
+                              },
+                            );
+                          },
+                          color: kPrimaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'Pedir',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight:
+                                  FontWeight.bold,
+                                  fontSize: 16.0,
                                 ),
                               ),
-                            ),
+                              Text(
+                                  NumberFormat.simpleCurrency(locale: 'pt_BR').format(_total),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight:
+                                    FontWeight.bold,
+                                    fontSize: 16.0,
+                                  )
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
