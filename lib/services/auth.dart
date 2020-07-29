@@ -1,4 +1,6 @@
 import 'package:clickped/models/user.dart';
+import 'package:clickped/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -30,11 +32,28 @@ class AuthService {
   }
 
   // Register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String cpf, String nome) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+
+      DatabaseService bd = DatabaseService(cpf: cpf);
+      final DocumentSnapshot profile = await bd.getUserProfile();
+
+      if (profile.exists) {
+        return 'Este CPF já está cadastrado';
+      }
+      else{
+        AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        FirebaseUser user = result.user;
+        UserUpdateInfo info = UserUpdateInfo();
+        info.displayName = cpf;
+        user.updateProfile(info);
+        await user.reload();
+
+        bd.updateUserProfile(nome, email);
+
+        return _userFromFirebaseUser(user);
+      }
+
     } on PlatformException catch(e) {
       return e.code;
     } catch(e) {

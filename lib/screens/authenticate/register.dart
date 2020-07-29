@@ -243,7 +243,7 @@ class _RegisterState extends State<Register> {
                       setState(() => _errorMessage = validateForm());
 
                       if (_errorMessage == '') {
-                        dynamic result = await _auth.registerWithEmailAndPassword(_currentEmail, _currentSenha);
+                        dynamic result = await _auth.registerWithEmailAndPassword(_currentEmail, _currentSenha, _currentCPF, _currentNome);
 
                         if (result == 'ERROR_EMAIL_ALREADY_IN_USE')
                           setState(() => _errorMessage = 'Este email já tem cadastro em nosso app. Clique em esqueci minha senha para recuperar.');

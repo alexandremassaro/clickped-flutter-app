@@ -2,18 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
 
-  final String uid;
+  final String cpf;
 
-  DatabaseService({ this.uid });
+  DatabaseService({ this.cpf });
 
   // collection reference
   final CollectionReference userProfileCollection = Firestore.instance.collection('userProfiles');
 
-  Future updateUserProfile(String nome, String cpf, String email) async {
-    return await userProfileCollection.document(uid).setData({
+  Future updateUserProfile(String nome, String email) async {
+    return await userProfileCollection.document(cpf).setData({
       'nome' : nome,
-      'cpf' : cpf,
       'email' : email,
     });
+  }
+
+  Future<DocumentSnapshot> getUserProfile() async {
+    return await userProfileCollection.document(cpf).get();
   }
 }
