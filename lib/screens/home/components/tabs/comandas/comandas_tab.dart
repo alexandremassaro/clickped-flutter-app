@@ -1,5 +1,6 @@
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ComandasTab extends StatefulWidget {
   @override
@@ -14,12 +15,40 @@ class _ComandasTabState extends State<ComandasTab> {
   Color _page0 = kPrimaryColor;
   Color _page1 = kSecondaryColor;
 
+  static List<Opcao> criarOpcoes() {
+    List<Opcao> _opcoes = List<Opcao>();
+
+    _opcoes.add(Opcao(nome: 'Opção 1', valor: 0.0));
+    _opcoes.add(Opcao(nome: 'Opção 2', valor: 9.99));
+    _opcoes.add(Opcao(nome: 'Opção 3', valor: 99.99));
+    _opcoes.add(Opcao(nome: 'Opção 4', valor: 999.99));
+
+    return _opcoes;
+
+  }
+
+  static List<Pedido> criarPedidos() {
+    List<Pedido> _pedidos = List<Pedido>();
+
+    _pedidos.add(Pedido(nome: 'Nome 1', quantidade: 2, valor: 9.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 2', quantidade: 5, valor: 99.99, opcoes: criarOpcoes()));
+    _pedidos.add(Pedido(nome: 'Nome 3', quantidade: 1, valor: 999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 4', quantidade: 1, valor: 9999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 5', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 6', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 7', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 8', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 9', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 10', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+
+    return _pedidos;
+  }
+
+  List<Pedido> pedidos = criarPedidos();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    BoxDecoration _page0Decoration;
-    BoxDecoration _page1Decoration;
 
     int _page = 0;
 
@@ -113,7 +142,7 @@ class _ComandasTabState extends State<ComandasTab> {
             ),
             Container(
               width: size.width,
-              height: size.height - 212,
+              height: size.height - 201,
               child: PageView(
                 onPageChanged: (page) => pageChanged(page),
                 controller: pageController,
@@ -126,7 +155,144 @@ class _ComandasTabState extends State<ComandasTab> {
                         Text('Horário de chegada: 28/07/2020 15:08'),
                         Text('Total: R\$ 200,00'),
                         Text('Pedidos:'),
-
+                        ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: pedidos.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            if (pedidos[index].opcoes.isNotEmpty)
+                            return ExpansionTile(
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10.0),
+                                        child: Text(
+                                          '${pedidos[index].quantidade}x',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kSecondaryColor
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        pedidos[index].nome,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          color: kSecondaryColor
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      color: kSecondaryColor
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Total:',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: kSecondaryColor
+                                    ),
+                                  ),
+                                  Text(
+                                    NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: kSecondaryColor
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              leading: CircleAvatar(
+                                backgroundImage: AssetImage('assets/images/banner1.jpg'),
+                              ),
+                              trailing: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.grey,
+                              ),
+                              children: <Widget>[
+                                for (Opcao opcao in pedidos[index].opcoes)
+                                  Row(
+                                    children: <Widget>[
+                                      Text(opcao.nome),
+                                      Text(NumberFormat.simpleCurrency(locale: 'pt_BR').format(opcao.valor))
+                                    ],
+                                  ),
+                              ],
+                            );
+                            else
+                              return ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(right: 10.0),
+                                          child: Text(
+                                            '${pedidos[index].quantidade}x',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: kSecondaryColor
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          pedidos[index].nome,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kSecondaryColor
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kSecondaryColor
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      'Total:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kSecondaryColor
+                                      ),
+                                    ),
+                                    Text(
+                                      NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kSecondaryColor
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundImage: AssetImage('assets/images/banner1.jpg'),
+                                ),
+                              );
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -139,4 +305,22 @@ class _ComandasTabState extends State<ComandasTab> {
       ),
     );
   }
+}
+
+class Pedido {
+  final String nome;
+  final int quantidade;
+  final double valor;
+  final List<Opcao> opcoes;
+
+  Pedido({ this.nome, this.quantidade, this.valor, this.opcoes });
+
+}
+
+class Opcao {
+  final String nome;
+  final double valor;
+
+  Opcao({ this.nome, this.valor });
+
 }
