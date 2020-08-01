@@ -36,23 +36,29 @@ class AuthService {
     try {
 
       DatabaseService bd = DatabaseService(cpf: cpf);
-      final DocumentSnapshot profile = await bd.getUserProfile();
 
-      if (profile.exists) {
-        return 'Este CPF já está cadastrado';
-      }
-      else{
-        AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-        FirebaseUser user = result.user;
-        UserUpdateInfo info = UserUpdateInfo();
-        info.displayName = cpf;
-        user.updateProfile(info);
-        await user.reload();
+      bd.getUserProfile().then((profile) async {
+        if (profile.exists) {
+          return 'Este CPF já está cadastrado';
+        }
+        else{
+          UserUpdateInfo info = UserUpdateInfo();
+          info.displayName = cpf;
 
-        bd.updateUserProfile(nome, email);
+          _auth.createUserWithEmailAndPassword(email: email, password: password).then((result) async {
+            FirebaseUser user = result.user;
+            user.updateProfile(info);
+            await user.reload();
 
-        return _userFromFirebaseUser(user);
-      }
+            bd.updateUserProfile(nome, email);
+
+            return _userFromFirebaseUser(user);
+          });
+
+          return null;
+
+        }
+      });
 
     } on PlatformException catch(e) {
       return e.code;
