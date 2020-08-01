@@ -1,4 +1,5 @@
 import 'package:clickped/shared/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,10 +19,10 @@ class _ComandasTabState extends State<ComandasTab> {
   static List<Opcao> criarOpcoes() {
     List<Opcao> _opcoes = List<Opcao>();
 
-    _opcoes.add(Opcao(nome: 'Opção 1', valor: 0.0));
+    _opcoes.add(Opcao(nome: 'Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1', valor: 0.0));
     _opcoes.add(Opcao(nome: 'Opção 2', valor: 9.99));
     _opcoes.add(Opcao(nome: 'Opção 3', valor: 99.99));
-    _opcoes.add(Opcao(nome: 'Opção 4', valor: 999.99));
+    _opcoes.add(Opcao(nome: 'Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4', valor: 999.99));
 
     return _opcoes;
 
@@ -30,18 +31,45 @@ class _ComandasTabState extends State<ComandasTab> {
   static List<Pedido> criarPedidos() {
     List<Pedido> _pedidos = List<Pedido>();
 
-    _pedidos.add(Pedido(nome: 'Nome 1', quantidade: 2, valor: 9.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 2', quantidade: 5, valor: 99.99, opcoes: criarOpcoes()));
-    _pedidos.add(Pedido(nome: 'Nome 3', quantidade: 1, valor: 999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 4', quantidade: 1, valor: 9999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 5', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 6', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 7', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 8', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 9', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
-    _pedidos.add(Pedido(nome: 'Nome 10', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>()));
+    _pedidos.add(Pedido(nome: 'Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1', quantidade: 99, valor: 99999.99, opcoes: List<Opcao>(),status: 1));
+    _pedidos.add(Pedido(nome: 'Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2', quantidade: 1, valor: 2.75, opcoes: criarOpcoes(),status: 2));
+    _pedidos.add(Pedido(nome: 'Nome 3', quantidade: 1, valor: 999.99, opcoes: List<Opcao>(),status: 3));
+    _pedidos.add(Pedido(nome: 'Nome 4', quantidade: 1, valor: 9999.99, opcoes: List<Opcao>(),status: 4));
+    _pedidos.add(Pedido(nome: 'Nome 5', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 5));
+    _pedidos.add(Pedido(nome: 'Nome 6', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
+    _pedidos.add(Pedido(nome: 'Nome 7', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
+    _pedidos.add(Pedido(nome: 'Nome 8', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
+    _pedidos.add(Pedido(nome: 'Nome 9', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
+    _pedidos.add(Pedido(nome: 'Nome 10', quantidade: 99, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
 
     return _pedidos;
+  }
+
+  Widget getStatusContainer(int status) {
+    Container _container;
+    String text = 'Enviado';
+
+    if (status == 1) {
+      text = 'Enviado';
+    } else if (status == 2) {
+      text = 'Preparando';
+    } else if (status == 3) {
+      text = 'Entregando';
+    } else if (status == 4) {
+      text = 'Finalizado';
+    } else if (status == 5) {
+      text = 'Cancelado';
+    }
+
+    return Container(
+      child: Text(
+        text,
+        style: TextStyle(
+          color: kSecondaryColor
+        ),
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
   }
 
   List<Pedido> pedidos = criarPedidos();
@@ -140,9 +168,7 @@ class _ComandasTabState extends State<ComandasTab> {
                   border: Border(bottom: BorderSide(color: kSecondaryColor.withAlpha(30)))
               ),
             ),
-            Container(
-              width: size.width,
-              height: size.height - 201,
+            Expanded(
               child: PageView(
                 onPageChanged: (page) => pageChanged(page),
                 controller: pageController,
@@ -152,9 +178,35 @@ class _ComandasTabState extends State<ComandasTab> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Horário de chegada: 28/07/2020 15:08'),
-                        Text('Total: R\$ 200,00'),
-                        Text('Pedidos:'),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Horário de chegada: 28/07/2020 15:08',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Text(
+                                'Total: R\$ 200,00',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+//                              Text(
+//                                'Pedidos:',
+//                                style: TextStyle(
+//                                    fontSize: 16.0,
+//                                    fontWeight: FontWeight.bold
+//                                ),
+//                              ),
+                            ],
+                          ),
+                        ),
                         ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: pedidos.length,
@@ -178,11 +230,15 @@ class _ComandasTabState extends State<ComandasTab> {
                                           ),
                                         ),
                                       ),
-                                      Text(
-                                        pedidos[index].nome,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor
+                                      Container(
+                                        width: size.width - 274,
+                                        child: Text(
+                                          pedidos[index].nome,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            color: kSecondaryColor
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
@@ -199,19 +255,28 @@ class _ComandasTabState extends State<ComandasTab> {
                               subtitle: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
-                                    'Total:',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: kSecondaryColor
-                                    ),
-                                  ),
-                                  Text(
-                                    NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: kSecondaryColor
-                                    ),
+                                  Expanded(child: getStatusContainer(pedidos[index].status)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                        child: Text(
+                                          'Total:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kSecondaryColor
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kSecondaryColor
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -223,72 +288,92 @@ class _ComandasTabState extends State<ComandasTab> {
                                 color: Colors.grey,
                               ),
                               children: <Widget>[
+                                Text('Opcionais'),
                                 for (Opcao opcao in pedidos[index].opcoes)
-                                  Row(
-                                    children: <Widget>[
-                                      Text(opcao.nome),
-                                      Text(NumberFormat.simpleCurrency(locale: 'pt_BR').format(opcao.valor))
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: Text(
+                                              opcao.nome,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                        ),
+                                        Text(NumberFormat.simpleCurrency(locale: 'pt_BR').format(opcao.valor))
+                                      ],
+                                    ),
                                   ),
+                                SizedBox(height: 10.0,)
                               ],
                             );
                             else
-                              return ListTile(
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(right: 10.0),
-                                          child: Text(
-                                            '${pedidos[index].quantidade}x',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: kSecondaryColor
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          pedidos[index].nome,
+                              return Container(
+                                width: size.width,
+                                child: ListTile(
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10.0),
+                                        child: Text(
+                                          '${pedidos[index].quantidade}x',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: kSecondaryColor
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    Text(
-                                      NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Total:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor
+                                      Expanded(
+                                        child: Text(
+                                          pedidos[index].nome,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kSecondaryColor
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor
+                                      Text(
+                                        NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kSecondaryColor
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                leading: CircleAvatar(
-                                  backgroundImage: AssetImage('assets/images/banner1.jpg'),
+                                    ],
+                                  ),
+                                  subtitle: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      getStatusContainer(pedidos[index].status),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                            child: Text(
+                                              'Total:',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kSecondaryColor
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            NumberFormat.simpleCurrency(locale: 'pt_BR').format(pedidos[index].valor * pedidos[index].quantidade),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: kSecondaryColor
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundImage: AssetImage('assets/images/banner1.jpg'),
+                                  ),
                                 ),
                               );
                           },
@@ -312,8 +397,9 @@ class Pedido {
   final int quantidade;
   final double valor;
   final List<Opcao> opcoes;
+  int status;
 
-  Pedido({ this.nome, this.quantidade, this.valor, this.opcoes });
+  Pedido({ this.nome, this.quantidade, this.valor, this.opcoes, this.status });
 
 }
 
