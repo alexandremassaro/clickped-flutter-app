@@ -1,7 +1,7 @@
 import 'package:clickped/models/item_cardapio_opcao.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Opcoes extends StatefulWidget {
   final ItemCardapioOpcao opcao;
@@ -114,7 +114,7 @@ class _OpcoesState extends State<Opcoes> {
               ListTile(
                 title: Text(op.valor == 0.0
                     ? op.opcao
-                    : '${op.opcao} - ${NumberFormat.simpleCurrency(locale: 'pt_BR').format(op.valor)}'),
+                    : '${op.opcao} - ${getCurrencyText(op.valor)}'),
                 trailing: isRadio()
                     ? Radio(
                         activeColor: kAccentColor,

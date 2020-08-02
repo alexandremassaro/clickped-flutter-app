@@ -1,7 +1,6 @@
 import 'package:clickped/components/rounded_button.dart';
 import 'package:clickped/components/sign_in_fields_container.dart';
 import 'package:clickped/components/text_field_container.dart';
-import 'package:clickped/screens/authenticate/register.dart';
 import 'package:clickped/services/auth.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ class _SignInState extends State<SignIn> {
   String _errorMessage = '';
 
   bool _showPassword = false;
-  bool _showConfirmPassword = false;
 
   bool validateEmail(String value) {
     Pattern pattern =

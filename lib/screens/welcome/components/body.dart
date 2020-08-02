@@ -1,7 +1,5 @@
 import 'package:clickped/components/rounded_button.dart';
 import 'package:clickped/components/sign_in_fields_container.dart';
-import 'package:clickped/screens/authenticate/authenticate.dart';
-import 'package:clickped/screens/authenticate/register.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -13,7 +11,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: SignInFieldsContainer(

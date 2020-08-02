@@ -1,8 +1,7 @@
 import 'dart:math';
-
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/rendering/sliver_persistent_header.dart';
+import 'package:flutter/rendering.dart' show FloatingHeaderSnapConfiguration, OverScrollHeaderStretchConfiguration;
 
 class CardapioHeaderDelegate implements SliverPersistentHeaderDelegate {
   final double minExtent;
@@ -55,24 +54,16 @@ class CardapioHeaderDelegate implements SliverPersistentHeaderDelegate {
     return 0.0 + min(0.0, offSet) / maxExtent;
   }
 
-//  @override
-//  // TODO: implement maxExtent
-//  double get maxExtent => throw UnimplementedError();
-//
-//  @override
-//  // TODO: implement minExtent
-//  double get minExtent => throw UnimplementedError();
-
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
 
   @override
-  // TODO: implement snapConfiguration
+  // implement snapConfiguration
   FloatingHeaderSnapConfiguration get snapConfiguration => null;
 
   @override
-  // TODO: implement stretchConfiguration
+  // implement stretchConfiguration
   OverScrollHeaderStretchConfiguration get stretchConfiguration => null;
 }

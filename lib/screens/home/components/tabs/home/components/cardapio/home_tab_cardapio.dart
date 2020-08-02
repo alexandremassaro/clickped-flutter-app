@@ -6,8 +6,8 @@ import 'package:clickped/screens/home/components/tabs/home/components/cardapio/c
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/components/home_tab_cardapio_dicas.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/item_detalhe.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class HomeTabCardapio extends StatelessWidget {
@@ -331,9 +331,7 @@ class HomeTabCardapio extends StatelessWidget {
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          NumberFormat.simpleCurrency(
-                                                  locale: 'pt_BR')
-                                              .format(_lista[index][1].preco),
+                                          getCurrencyText(_lista[index][1].preco),
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),

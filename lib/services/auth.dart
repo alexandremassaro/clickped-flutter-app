@@ -1,6 +1,5 @@
 import 'package:clickped/models/user.dart';
 import 'package:clickped/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 

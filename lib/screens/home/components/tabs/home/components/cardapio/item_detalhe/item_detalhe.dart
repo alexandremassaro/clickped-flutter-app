@@ -3,9 +3,9 @@ import 'package:clickped/models/item_cardapio_opcao.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/confirmar_pedido.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/opcoes.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:clickped/shared/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ItemDetalhe extends StatefulWidget {
   final ItemCardapio itemCardapio;
@@ -42,11 +42,11 @@ class _ItemDetalheState extends State<ItemDetalhe> {
     setState(() => _quantidade >= 99 ? _addButtonColor = Colors.grey : _addButtonColor = kPrimaryColor);
 
     void addQuantidade() {
-      _quantidade < 99 ? setState(() => _quantidade += 1) : null ;
+      if (_quantidade < 99) setState(() => _quantidade += 1);
     }
 
     void removeQuantidade() {
-      _quantidade > 1 ? setState(() => _quantidade -= 1) : null ;
+      if (_quantidade > 1) setState(() => _quantidade -= 1);
     }
 
     Widget buttonConfirmar = FlatButton(
@@ -122,7 +122,7 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        NumberFormat.simpleCurrency(locale: 'pt_BR').format(widget.itemCardapio.preco),
+                        getCurrencyText(widget.itemCardapio.preco),
                         style: TextStyle(
                           fontSize: 20.0,
                           color: kAccentColor
@@ -264,7 +264,7 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                                 ),
                               ),
                               Text(
-                                  NumberFormat.simpleCurrency(locale: 'pt_BR').format(_total),
+                                  getCurrencyText(_total),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight:

@@ -1,6 +1,5 @@
 import 'package:clickped/components/rounded_button.dart';
 import 'package:clickped/components/text_field_container.dart';
-import 'package:clickped/screens/home/home.dart';
 import 'package:clickped/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:clickped/shared/constants.dart';

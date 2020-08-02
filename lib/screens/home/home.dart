@@ -2,7 +2,6 @@
 import 'package:clickped/screens/home/components/tabs/comandas/comandas_tab.dart';
 import 'package:clickped/screens/home/components/tabs/home/home_tab.dart';
 import 'package:clickped/services/auth.dart';
-import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'components/home_navigation_bar.dart';
 
@@ -13,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  String _QRCode = '';
 
   int setCurrentIndex(index) {
     setState(() {

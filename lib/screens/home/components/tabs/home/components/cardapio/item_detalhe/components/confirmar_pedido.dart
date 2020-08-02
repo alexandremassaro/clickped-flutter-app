@@ -1,7 +1,7 @@
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/item_detalhe.dart';
 import 'package:clickped/shared/constants.dart';
+import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ConfirmarPedido extends StatelessWidget {
   const ConfirmarPedido({
@@ -67,7 +67,7 @@ class ConfirmarPedido extends StatelessWidget {
                         child: Text(widget.itemCardapio.nome, overflow: TextOverflow.clip,),
                       ),
                     ),
-                    Text(NumberFormat.simpleCurrency(locale: 'pt_BR').format(_total)),
+                    Text(getCurrencyText(_total)),
                   ],
                 ),
               ),
