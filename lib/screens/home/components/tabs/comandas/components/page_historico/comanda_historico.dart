@@ -1,4 +1,5 @@
 import 'package:clickped/models/comanda.dart';
+import 'package:clickped/screens/home/components/tabs/comandas/components/page_historico/components/historico_detalhe.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
@@ -38,19 +39,19 @@ class _ComandaHistoricoState extends State<ComandaHistorico> {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[200],
-                border: Border.all(color: Colors.grey[200]),
+                //color: Colors.grey[200],
+                  color: kPrimaryColor.withAlpha(50),
+                border: Border.all(color: kPrimaryColor.withAlpha(10),),
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))
               ),
               child: Column(
-
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Text(
                       getDateText(_datas[index]),
                       style: TextStyle(
-                        fontSize: 20.0
+                        fontSize: 20.0,
                       ),
                     ),
                   ),
@@ -59,19 +60,24 @@ class _ComandaHistoricoState extends State<ComandaHistorico> {
                       Container(
                         color: Colors.white,
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage(comanda.estabelecimento.foto),
+                          leading: Hero(
+                            tag: comanda.dataChegada,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(comanda.estabelecimento.foto),
+                            ),
                           ),
                           title: Text(
                             comanda.estabelecimento.nome,
                             style: TextStyle(
-                              fontSize: 18.0
+                              fontSize: 18.0,
                             ),
                           ),
                           subtitle: Text(getCurrencyText(comanda.getTotal())),
                           trailing: IconButton(
                             icon: Icon(Icons.search),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HistoricoDetalhe(comanda: comanda)));
+                            },
                           ),
                         ),
                       ),

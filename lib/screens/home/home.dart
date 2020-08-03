@@ -3,6 +3,7 @@ import 'package:clickped/models/comanda.dart';
 import 'package:clickped/models/estabelecimento.dart';
 import 'package:clickped/screens/home/components/tabs/comandas/comandas_tab.dart';
 import 'package:clickped/screens/home/components/tabs/home/home_tab.dart';
+import 'package:clickped/screens/home/components/tabs/perfil/perfil_tab.dart';
 import 'package:clickped/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'components/home_navigation_bar.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeTab(comanda: _comanda, checkIn: _checkIn,),
       ComandasTab(comanda: _comanda),
       // TODO: Implement "Perfil" tab in home screen
-      Center(child: Text('Perfil')),
+      PerfilTab(),
     ];
 
     return Scaffold(

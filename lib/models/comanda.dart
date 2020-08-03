@@ -27,7 +27,7 @@ class Comanda {
     comanda.pedidos = Pedido.getPedidosFromDatabase(1);
     comanda.pago = true;
     _comandas.add(comanda);
-    comanda = Comanda(estabelecimento: Estabelecimento.getEstabecimentoFromDatabase(1), dataChegada: DateTime.now().subtract(Duration(days: 2)), usuarioUid: '1234567890');
+    comanda = Comanda(estabelecimento: Estabelecimento.getEstabecimentoFromDatabase(1), dataChegada: DateTime.now().subtract(Duration(days: 2, hours: 1)), usuarioUid: '1234567890');
     comanda.pedidos = Pedido.getPedidosFromDatabase(1);
     comanda.pago = true;
     _comandas.add(comanda);
