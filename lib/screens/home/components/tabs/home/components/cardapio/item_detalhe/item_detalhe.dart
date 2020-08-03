@@ -1,5 +1,7 @@
+import 'package:clickped/models/comanda.dart';
 import 'package:clickped/models/item_cardapio.dart';
 import 'package:clickped/models/item_cardapio_opcao.dart';
+import 'package:clickped/models/pedido.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/confirmar_pedido.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/components/opcoes.dart';
 import 'package:clickped/shared/constants.dart';
@@ -10,8 +12,9 @@ import 'package:flutter/material.dart';
 class ItemDetalhe extends StatefulWidget {
   final ItemCardapio itemCardapio;
   final String heroTag;
+  final Comanda comanda;
 
-  const ItemDetalhe({Key key, this.itemCardapio, this.heroTag}) : super(key: key);
+  const ItemDetalhe({Key key, this.itemCardapio, this.heroTag, this.comanda}) : super(key: key);
 
   @override
   _ItemDetalheState createState() => _ItemDetalheState();
@@ -22,6 +25,7 @@ class _ItemDetalheState extends State<ItemDetalhe> {
   int _quantidade = 1;
   Color _removeButtonColor = kPrimaryColor;
   Color _addButtonColor = kPrimaryColor;
+  String _observacao = '';
 
   double calculaTotal() {
     double totalOpcoes = 0;
@@ -56,8 +60,8 @@ class _ItemDetalheState extends State<ItemDetalhe> {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
+        widget.comanda.pedidos.add(Pedido(item: widget.itemCardapio,dataPedido: DateTime.now(), quantidade: _quantidade, observacao: _observacao.trim()));
         Navigator.of(context).pop();
-        print('Confirmar');
         Navigator.of(context).pop();
       },
     );
@@ -170,10 +174,6 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                             ),
                           ],
                         ),
-//                        decoration: BoxDecoration(
-//                          border: Border.all(color: Colors.grey, style: BorderStyle.solid),
-//                          borderRadius: BorderRadius.circular(8.0),
-//                        ),
                       ),
                     ],
                   ),
@@ -204,6 +204,7 @@ class _ItemDetalheState extends State<ItemDetalhe> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: TextField(
+                      onChanged: (value) => setState(() => _observacao = value),
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),

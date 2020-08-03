@@ -1,4 +1,5 @@
 import 'package:clickped/models/user.dart';
+import 'package:clickped/screens/splash_screen.dart';
 import 'package:clickped/screens/wrapper.dart';
 import 'package:clickped/services/auth.dart';
 import 'package:clickped/shared/constants.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           )
         ),
         locale: Locale.fromSubtags(countryCode: 'BRL'),
-        home: Wrapper(),
+        home: MySplashScreen(),
       ),
     );
   }

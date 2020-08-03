@@ -113,8 +113,8 @@ class _OpcoesState extends State<Opcoes> {
             for (OpcaoItem op in widget.opcao.opcoes)
               ListTile(
                 title: Text(op.valor == 0.0
-                    ? op.opcao
-                    : '${op.opcao} - ${getCurrencyText(op.valor)}'),
+                    ? op.nome
+                    : '${op.nome} - ${getCurrencyText(op.valor)}'),
                 trailing: isRadio()
                     ? Radio(
                         activeColor: kAccentColor,

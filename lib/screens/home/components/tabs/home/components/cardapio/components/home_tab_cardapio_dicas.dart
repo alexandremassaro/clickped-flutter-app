@@ -1,3 +1,5 @@
+import 'package:clickped/models/categoria_cardapio.dart';
+import 'package:clickped/models/comanda.dart';
 import 'package:clickped/models/item_cardapio.dart';
 import 'package:clickped/screens/home/components/tabs/home/components/cardapio/item_detalhe/item_detalhe.dart';
 import 'package:clickped/shared/constants.dart';
@@ -8,10 +10,13 @@ class HomeTabCardapioDicas extends StatelessWidget {
   const HomeTabCardapioDicas({
     Key key,
     @required List<ItemCardapio> cardapio,
+    @required Comanda comanda
   })  : _cardapio = cardapio,
+        _comanda = comanda,
         super(key: key);
 
   final List<ItemCardapio> _cardapio;
+  final Comanda _comanda;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class HomeTabCardapioDicas extends StatelessWidget {
                           builder: (context) => ItemDetalhe(
                             itemCardapio: _cardapio[index],
                             heroTag: '${_cardapio[index].nome}_${index}_dicas',
+                            comanda: _comanda,
                           ))),
                   child: Row(
                     children: <Widget>[
@@ -96,7 +102,7 @@ class HomeTabCardapioDicas extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         color: kAccentColor),
                                   ),
-                                  Text(_cardapio[index].categorias[0]),
+                                  Text(CategoriaCardapio.getCategoriaFromDatabase(_cardapio[index].categorias[0]).nome),
                                   Text(getCurrencyText(_cardapio[index].preco)),
                                 ],
                               ),

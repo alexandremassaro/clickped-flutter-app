@@ -19,4 +19,5 @@ class DatabaseService {
   Future<DocumentSnapshot> getUserProfile() async {
     return await userProfileCollection.document(cpf).get();
   }
+
 }

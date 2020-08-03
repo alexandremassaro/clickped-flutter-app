@@ -1,38 +1,15 @@
+import 'package:clickped/models/comanda.dart';
+import 'package:clickped/models/item_cardapio_opcao.dart';
+import 'package:clickped/models/pedido.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ComandaAberta extends StatelessWidget {
-  final List<Pedido> pedidos = criarPedidos();
+  final Comanda comanda;
 
-  static List<Opcao> criarOpcoes() {
-    List<Opcao> _opcoes = List<Opcao>();
-
-    _opcoes.add(Opcao(nome: 'Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1Opção 1', valor: 0.0));
-    _opcoes.add(Opcao(nome: 'Opção 2', valor: 9.99));
-    _opcoes.add(Opcao(nome: 'Opção 3', valor: 99.99));
-    _opcoes.add(Opcao(nome: 'Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4Opção 4', valor: 999.99));
-
-    return _opcoes;
-
-  }
-
-  static List<Pedido> criarPedidos() {
-    List<Pedido> _pedidos = List<Pedido>();
-
-    _pedidos.add(Pedido(nome: 'Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1Nome 1', quantidade: 99, valor: 99999.99, opcoes: List<Opcao>(),status: 1));
-    _pedidos.add(Pedido(nome: 'Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2Nome 2', quantidade: 1, valor: 2.75, opcoes: criarOpcoes(),status: 2));
-    _pedidos.add(Pedido(nome: 'Nome 3', quantidade: 1, valor: 999.99, opcoes: List<Opcao>(),status: 3));
-    _pedidos.add(Pedido(nome: 'Nome 4', quantidade: 1, valor: 9999.99, opcoes: List<Opcao>(),status: 4));
-    _pedidos.add(Pedido(nome: 'Nome 5', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 5));
-    _pedidos.add(Pedido(nome: 'Nome 6', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
-    _pedidos.add(Pedido(nome: 'Nome 7', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
-    _pedidos.add(Pedido(nome: 'Nome 8', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
-    _pedidos.add(Pedido(nome: 'Nome 9', quantidade: 1, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
-    _pedidos.add(Pedido(nome: 'Nome 10', quantidade: 99, valor: 99999.99, opcoes: List<Opcao>(),status: 4));
-
-    return _pedidos;
-  }
+  const ComandaAberta({Key key, this.comanda}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +24,17 @@ class ComandaAberta extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                HeaderText(text: 'Horário de chegada: 28/07/2020 15:08',),
-                HeaderText(text: 'Total: R\$ 200,00',),
+                HeaderText(text: 'Horário de chegada: ${DateFormat('dd/MM/yyyy').add_Hm().format(comanda.dataChegada)}',),
+                HeaderText(text: 'Total: ${getCurrencyText(comanda.getTotal())}',),
               ],
             ),
           ),
           ListView.builder(
             physics: NeverScrollableScrollPhysics(),
-            itemCount: pedidos.length,
+            itemCount: comanda.pedidos.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return ItemComanda(pedido: pedidos[index]);
+              return ItemComanda(pedido: comanda.pedidos[index]);
             },
           ),
         ],
@@ -75,46 +52,54 @@ class ItemComanda extends StatelessWidget {
   final Pedido pedido;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
-    if (pedido.opcoes.isNotEmpty)
-      return ExpansionTile(
-        title: ItemComandaTitle(pedido: pedido),
-        subtitle: ItemComandaSubtitle(pedido: pedido),
-        leading: ItemComandaLeading(imagePath: 'assets/images/banner1.jpg'),
-        trailing: Icon(
-          Icons.keyboard_arrow_down,
-          color: Colors.grey,
+    return ExpansionTile(
+      title: ItemComandaTitle(pedido: pedido),
+      subtitle: ItemComandaSubtitle(pedido: pedido),
+      leading: ItemComandaLeading(imagePath: pedido.item.fotos[0]),
+
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Text('Pedido às: ${getDateTimeText(pedido.dataPedido)}'),
         ),
-        children: <Widget>[
-          Text('Opcionais'),
-          for (Opcao opcao in pedido.opcoes)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Text(
-                        opcao.nome,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                  ),
-                  Text(getCurrencyText(opcao.valor))
-                ],
+        if (pedido.item.opcoes.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text('Opcionais'),
+          ),
+        for (ItemCardapioOpcao opcionais in pedido.item.opcoes)
+          for (OpcaoItem opcao in opcionais.opcoes)
+            if (opcao.selected)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Text(
+                          opcao.nome,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                    ),
+                    Text(getCurrencyText(opcao.valor))
+                  ],
+                ),
               ),
-            ),
-          SizedBox(height: 10.0,)
-        ],
-      );
-    else
-      return Container(
-        width: size.width,
-        child: ListTile(
-          title: ItemComandaTitle(pedido: pedido),
-          subtitle: ItemComandaSubtitle(pedido: pedido),
-          leading: ItemComandaLeading(imagePath: 'assets/images/banner1.jpg'),
-        ),
-      );
+        if (pedido.observacao.trim().isNotEmpty)
+          Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text('Observação:'),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(pedido.observacao.trim()),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 }
 
@@ -160,7 +145,7 @@ class ItemComandaTitle extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            pedido.nome,
+            pedido.item.nome,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: kSecondaryColor
@@ -169,7 +154,7 @@ class ItemComandaTitle extends StatelessWidget {
           ),
         ),
         Text(
-          getCurrencyText(pedido.valor),
+          getCurrencyText(pedido.getValorUnitario()),
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: kSecondaryColor
@@ -234,7 +219,7 @@ class ItemComandaSubtitle extends StatelessWidget {
               ),
             ),
             Text(
-              getCurrencyText(pedido.valor * pedido.quantidade),
+              getCurrencyText(pedido.getTotal()),
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: kSecondaryColor
@@ -266,21 +251,21 @@ class HeaderText extends StatelessWidget {
   }
 }
 
-class Pedido {
-  final String nome;
-  final int quantidade;
-  final double valor;
-  final List<Opcao> opcoes;
-  int status;
-
-  Pedido({ this.nome, this.quantidade, this.valor, this.opcoes, this.status });
-
-}
-
-class Opcao {
-  final String nome;
-  final double valor;
-
-  Opcao({ this.nome, this.valor });
-
-}
+//class Pedido {
+//  final String nome;
+//  final int quantidade;
+//  final double valor;
+//  final List<Opcao> opcoes;
+//  int status;
+//
+//  Pedido({ this.nome, this.quantidade, this.valor, this.opcoes, this.status });
+//
+//}
+//
+//class Opcao {
+//  final String nome;
+//  final double valor;
+//
+//  Opcao({ this.nome, this.valor });
+//
+//}

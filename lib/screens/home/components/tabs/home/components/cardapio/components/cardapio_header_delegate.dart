@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:clickped/models/estabelecimento.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart' show FloatingHeaderSnapConfiguration, OverScrollHeaderStretchConfiguration;
@@ -6,8 +7,9 @@ import 'package:flutter/rendering.dart' show FloatingHeaderSnapConfiguration, Ov
 class CardapioHeaderDelegate implements SliverPersistentHeaderDelegate {
   final double minExtent;
   final double maxExtent;
+  final Estabelecimento estabelecimento;
 
-  CardapioHeaderDelegate({this.minExtent, this.maxExtent});
+  CardapioHeaderDelegate({this.minExtent, this.maxExtent, this.estabelecimento});
 
   @override
   Widget build(
@@ -25,7 +27,7 @@ class CardapioHeaderDelegate implements SliverPersistentHeaderDelegate {
           child: SafeArea(
             child: Center(
                 child: Text(
-                  'Nome do Restaurante',
+                  estabelecimento.nome,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18.0,
@@ -36,7 +38,7 @@ class CardapioHeaderDelegate implements SliverPersistentHeaderDelegate {
         ),
 
         Image(
-          image: AssetImage('assets/images/banner1.jpg'),
+          image: AssetImage(estabelecimento.foto),
           fit: BoxFit.fitWidth,
           color: Colors.grey.withOpacity(imageOpacity(shrinkOffset)),
           colorBlendMode: BlendMode.modulate,

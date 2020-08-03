@@ -1,9 +1,14 @@
-import 'file:///E:/Documents/Flutter_Projects/clickped/lib/screens/home/components/tabs/comandas/components/page_aberta/comanda_aberta.dart';
+import 'package:clickped/models/comanda.dart';
+import 'package:clickped/screens/home/components/tabs/comandas/components/page_aberta/comanda_aberta.dart';
+import 'package:clickped/screens/home/components/tabs/comandas/components/page_historico/comanda_historico.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ComandasTab extends StatefulWidget {
+  final Comanda comanda;
+
+  const ComandasTab({Key key, this.comanda}) : super(key: key);
   @override
   _ComandasTabState createState() => _ComandasTabState();
 }
@@ -107,8 +112,29 @@ class _ComandasTabState extends State<ComandasTab> {
                 onPageChanged: (page) => pageChanged(page),
                 controller: pageController,
                 children: <Widget>[
-                  ComandaAberta(),
-                  Text('Page 2'),
+                    widget.comanda != null
+                        ? ComandaAberta(comanda: widget.comanda,)
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/images/clickped_logo_dark_hor.png'),
+                          width: size.width * .8,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            'Nenhuma comanda aberta. Faça o checkin no estabelecimento pela aba Home',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 22.0
+                            ),
+                          ),
+                        ),
+                        Icon(Icons.home, size: 50.0,),
+                      ],
+                    ),
+                  ComandaHistorico(),
                 ],
               ),
             )
