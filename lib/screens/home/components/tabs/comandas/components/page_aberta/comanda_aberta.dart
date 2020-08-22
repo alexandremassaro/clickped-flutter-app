@@ -1,11 +1,8 @@
 import 'package:clickped/models/comanda.dart';
-import 'package:clickped/models/item_cardapio_opcao.dart';
-import 'package:clickped/models/pedido.dart';
 import 'package:clickped/screens/home/components/tabs/comandas/components/components/item_comanda.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:clickped/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ComandaAberta extends StatelessWidget {

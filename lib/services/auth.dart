@@ -1,66 +1,36 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:clickped/models/user.dart';
 import 'package:clickped/services/database.dart';
+import 'package:clickped/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
 class AuthService {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final AuthenticationState _auth = AuthenticationState();
 
-  // Create user object based on FirebseUser
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+
+  User _userFromJson(Map userData){
+    return userData == null ? null : User.fromJson(userData);
   }
 
   // auth change user stream
   Stream<User> get user {
-    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
-  }
-
-  // Sign in anon
-  Future signInAnon() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch(e) {
-      print('error in AuthServive.signInAnon');
-      print(e.toString());
-      return null;
-    }
+    return _auth.onAuthStateChanged.map(_userFromJson);
   }
 
   // Register with email and password
-  Future registerWithEmailAndPassword(String email, String password, String cpf, String nome) async {
+  Future registerWithEmailAndPassword(String name, String email, String password, String cpf, String passwordConfirmation) async {
     try {
 
-      DatabaseService bd = DatabaseService(cpf: cpf);
+      Map user = await _auth.register(name, email, cpf, password, passwordConfirmation);
+      return User.fromJson(user);
 
-      bd.getUserProfile().then((profile) async {
-        if (profile.exists) {
-          return 'Este CPF já está cadastrado';
-        }
-        else{
-          UserUpdateInfo info = UserUpdateInfo();
-          info.displayName = cpf;
-
-          _auth.createUserWithEmailAndPassword(email: email, password: password).then((result) async {
-            FirebaseUser user = result.user;
-            user.updateProfile(info);
-            await user.reload();
-
-            bd.updateUserProfile(nome, email);
-
-            return _userFromFirebaseUser(user);
-          });
-
-          return null;
-
-        }
-      });
-
-    } on PlatformException catch(e) {
-      return e.code;
     } catch(e) {
       print('error in AuthServive.registerWithEmailAndPassword');
       print(e.toString());
@@ -71,9 +41,8 @@ class AuthService {
   // Sign in email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      Map user = await _auth.signIn(email, password);
+      return _userFromJson(user);
     } on PlatformException catch(e) {
       print(e.code);
       return e.code;
@@ -83,6 +52,7 @@ class AuthService {
       return null;
     }
   }
+
   //TODO: Sign in Google account
   //TODO: Sign in Facebook
   //TODO: Sign out
@@ -95,5 +65,96 @@ class AuthService {
       return null;
     }
   }
+}
+
+enum AuthenticationStatus{
+  initial,
+  authenticated,
+  failed,
+  expired,
+  signedOut,
+}
+
+class AuthenticationState {
+  bool authenticated;
+  AuthenticationStatus status = AuthenticationStatus.initial;
+  String _accessToken = '';
+  final _controller = StreamController<Map>();
+
+  Future<Map> register(String name, String email, String cpf, String password, String passwordConfirmation) async {
+    try {
+      Response jsonResponse = await post(registerApiUrl, body: {'name': name, 'email': email, 'cpf': cpf, 'password': password, 'password_confirmation': passwordConfirmation});
+
+      if (jsonResponse.statusCode >= 200 && jsonResponse.statusCode < 300){
+        return signIn(email, password);
+      } else {
+        authenticated = false;
+        status = AuthenticationStatus.failed;
+        _controller.add(null);
+        throw 'Erro: ' + jsonResponse.statusCode.toString();
+      }
+    } catch (e) {
+      authenticated = false;
+      status = AuthenticationStatus.failed;
+      _controller.add(null);
+      return null;
+    }
+  }
+
+  Future<Map> signIn(String email, String password) async {
+    try {
+      Response jsonResponse = await post(loginApiUrl, body: {'email': email, 'password': password});
+      Map data = jsonDecode(jsonResponse.body);
+
+      if (jsonResponse.statusCode >= 200 && jsonResponse.statusCode < 300) {
+        _accessToken = data['access_token'];
+
+        jsonResponse = await post(meApiUrl, headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ' + _accessToken
+        });
+        print(jsonResponse);
+        data = jsonDecode(jsonResponse.body);
+
+        authenticated = true;
+        status = AuthenticationStatus.authenticated;
+        _controller.add(data);
+
+        return data;
+      } else {
+        authenticated = false;
+        status = AuthenticationStatus.failed;
+        _controller.add(null);
+        throw 'Erro: ' + jsonResponse.statusCode.toString();
+      }
+    } catch (e) {
+      authenticated = false;
+      status = AuthenticationStatus.failed;
+      _controller.add(null);
+      return null;
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      Response jsonResponse = await post(logoutApiUrl, headers: {HttpHeaders.authorizationHeader: 'Bearer ' + _accessToken});
+      if (jsonResponse.statusCode >= 200 && jsonResponse.statusCode < 300) {
+        _accessToken = '';
+        authenticated = false;
+        status = AuthenticationStatus.signedOut;
+        _controller.add(null);
+      } else {
+        authenticated = false;
+        status = AuthenticationStatus.failed;
+        _controller.add(null);
+        throw 'Erro: ' + jsonResponse.statusCode.toString();
+      }
+    } catch (e) {
+      authenticated = false;
+      status = AuthenticationStatus.failed;
+      _controller.add(null);
+    }
+  }
+
+  Stream<Map> get onAuthStateChanged => _controller.stream;
 
 }

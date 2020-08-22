@@ -75,7 +75,6 @@ class _RegisterState extends State<Register> {
             Icons.arrow_back,
             color: kSecondaryColor,
           ),
-          //onPressed: () => Navigator.pop(context),
           onPressed: () => widget.setScreen(0),
         ),
       ),
@@ -242,7 +241,7 @@ class _RegisterState extends State<Register> {
                       setState(() => _errorMessage = validateForm());
 
                       if (_errorMessage == '') {
-                        dynamic result = await _auth.registerWithEmailAndPassword(_currentEmail, _currentSenha, _currentCPF, _currentNome);
+                        dynamic result = await _auth.registerWithEmailAndPassword(_currentEmail, _currentSenha, _currentCPF, _currentNome, _currentSenhaConfirma);
 
                         if (result == 'ERROR_EMAIL_ALREADY_IN_USE')
                           setState(() => _errorMessage = 'Este email já tem cadastro em nosso app. Clique em esqueci minha senha para recuperar.');
