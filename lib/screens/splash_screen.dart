@@ -14,7 +14,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
     return Stack(
       children: <Widget>[
         SplashScreen(
-          seconds: 5,
+          seconds: 1,
           backgroundColor: Colors.white,
           navigateAfterSeconds: Wrapper(),
           loaderColor: Colors.transparent,

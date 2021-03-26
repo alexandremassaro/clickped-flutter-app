@@ -1,7 +1,9 @@
 import 'package:clickped/components/rounded_button.dart';
 import 'package:clickped/components/text_field_container.dart';
+import 'package:clickped/models/user.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditarPerfil extends StatefulWidget {
   @override
@@ -18,13 +20,14 @@ class _EditarPerfilState extends State<EditarPerfil> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final User user = Provider.of<User>(context);
 
     void toggleShowPassword() => setState(() => _showPassword = !_showPassword);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Editar Perfil'),
+        title: Text('Editar Perfil - ' + user.name),
         elevation: 0.0,
       ),
       body: Center(
@@ -60,7 +63,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
-                    hintText: 'Nome',
+                    hintText: 'Alterar nome',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -81,7 +84,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                       fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.mail),
-                    hintText: 'Email',
+                    hintText: 'Alterar email',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -107,7 +110,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         child: Icon(_showPassword
                             ? Icons.visibility_off
                             : Icons.visibility)),
-                    hintText: 'Senha',
+                    hintText: 'Alterar senha',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,

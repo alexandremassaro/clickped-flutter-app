@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
-const apiUrl = 'http://192.168.15.2:8000/api/';
-const loginApiUrl = apiUrl + 'auth/login';
-const logoutApiUrl = apiUrl + 'auth/logout';
-const meApiUrl = apiUrl + 'auth/me';
-const registerApiUrl = apiUrl + 'auth/register';
+// Api Urls
+const apiUrl = 'http://192.168.0.103:8000/api/';
+
+// Api Auth Urls
+const authenticationApiUrl = 'auth/';
+const loginApiUrl = apiUrl + authenticationApiUrl + 'login';
+const logoutApiUrl = apiUrl + authenticationApiUrl + 'logout';
+const meApiUrl = apiUrl + authenticationApiUrl + 'me';
+const registerApiUrl = apiUrl + authenticationApiUrl + 'register';
+const refreshTokenApiUrl = apiUrl + authenticationApiUrl + 'refresh';
+
+// Api get cardapio url
+const getCardapioApiUrl = apiUrl + 'cardapio';
 
 const Color kPrimaryColor = Color.fromRGBO(217, 35, 68, 1);
 const Color kSecondaryColor = Color.fromRGBO(36, 35, 35, 1);

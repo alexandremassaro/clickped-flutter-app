@@ -9,11 +9,11 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    //print(user.toString());
 
     if (user == null) {
       return WelcomeScreen();
     } else {
-      print(user.name);
       return HomeScreen();
     }
   }

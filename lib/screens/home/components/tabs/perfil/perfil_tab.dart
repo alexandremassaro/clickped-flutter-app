@@ -1,11 +1,16 @@
+import 'package:clickped/models/user.dart';
 import 'package:clickped/screens/home/components/tabs/perfil/editar_perfil/editar_perfil.dart';
 import 'package:clickped/screens/home/components/tabs/perfil/formas_pagamento/formas_pagamento.dart';
 import 'package:clickped/shared/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PerfilTab extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
     return SafeArea(
       child: ListView.builder(
         itemCount: 2,
@@ -14,7 +19,7 @@ class PerfilTab extends StatelessWidget {
             case 0: {
               return Card(
                 child: ListTile(
-                  title: Text('Alexandre Massaro'),
+                  title: Text(user.name),
                   subtitle: Text('Editar perfil'),
                   leading: Hero(
                     tag: 'foto_perfil',

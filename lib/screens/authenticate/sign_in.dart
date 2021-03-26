@@ -130,20 +130,21 @@ class _SignInState extends State<SignIn> {
             RoundedButton(
               //press: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen())),
               press: () async {
-                setState(() => _errorMessage = validateForm());
-
-                if (_errorMessage == '') {
-                  dynamic result = await _auth.signInWithEmailAndPassword(_currentEmail, _currentSenha);
-
-                  if (result == 'ERROR_USER_NOT_FOUND')
-                    setState(() => _errorMessage = 'Este email não foi encontrado em nosso cadastro.');
-                  else if (result == 'ERROR_WRONG_PASSWORD')
-                    setState(() => _errorMessage = 'Senha incorreta.');
-                  else if (result is String)
-                    setState(() => _errorMessage = result);
-                  else if (result == null)
-                    setState(() => _errorMessage = 'Erro ao tentar acessar.');
-                }
+                await _auth.signInWithEmailAndPassword('lojista@teste.com', 'teste123');
+//                setState(() => _errorMessage = validateForm());
+//
+//                if (_errorMessage == '') {
+//                  dynamic result = _auth.signInWithEmailAndPassword(_currentEmail, _currentSenha);
+//
+//                  if (result == 'ERROR_USER_NOT_FOUND')
+//                    setState(() => _errorMessage = 'Este email não foi encontrado em nosso cadastro.');
+//                  else if (result == 'ERROR_WRONG_PASSWORD')
+//                    setState(() => _errorMessage = 'Senha incorreta.');
+//                  else if (result is String)
+//                    setState(() => _errorMessage = result);
+//                  else if (result == null)
+//                    setState(() => _errorMessage = 'Erro ao tentar acessar.');
+//                }
               },
               color: kPrimaryColor,
               child: Text(

@@ -52,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
           left: position.dx,
           top:  position.dy,
           child: Draggable(
-              feedback: FloatingActionButton(child: Icon(Icons.chat), onPressed: () async { await _auth.registerWithEmailAndPassword('Alexandre', 'lojista@teste.com', 'teste123', '11111111111', 'teste'); }),
-              child: FloatingActionButton(child: Icon(Icons.chat), onPressed: () async { await _auth.registerWithEmailAndPassword('Alexandre', 'lojista@teste.com', 'teste123', '11111111111', 'teste'); }),
+              feedback: FloatingActionButton(child: Icon(Icons.chat), onPressed: () async { await _auth.signOut(); }),
+              child: FloatingActionButton(child: Icon(Icons.chat), onPressed: () async { await _auth.signOut(); }),
               childWhenDragging: Container(),
               onDragEnd: (details){
                 setState(() {
